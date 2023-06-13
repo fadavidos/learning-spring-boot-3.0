@@ -6,10 +6,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class VideoService {
+
+    private final VideoRepository videoRepository;
+
+    public VideoService(VideoRepository videoRepository){
+        this.videoRepository = videoRepository;
+    }
 
     private List<Video> videos = List.of(
             new Video("Need HELP with your SPRING BOOT 3App?"),
@@ -29,6 +36,25 @@ public class VideoService {
 
     }
 
+    public List<VideoEntity> search(VideoSearch videoSearch) {
+        if (StringUtils.hasText(videoSearch.name()) //
+                && StringUtils.hasText(videoSearch.description())) {
+            return videoRepository
+                    .findByNameContainsOrDescriptionContainsAllIgnoreCase( //
+                            videoSearch.name(), videoSearch.description());
+        }
+
+        if (StringUtils.hasText(videoSearch.name())) {
+            return videoRepository.findByNameContainsIgnoreCase(videoSearch.name());
+        }
+
+        if (StringUtils.hasText(videoSearch.description())) {
+            return videoRepository.findByDescriptionContainsIgnoreCase(videoSearch.description());
+        }
+
+        return Collections.emptyList();
+    }
+
     public List<VideoEntity> search(UniversalSearch search){
         VideoEntity probe = new VideoEntity();
         if(StringUtils.hasText(search.value())) {
@@ -36,10 +62,10 @@ public class VideoService {
             probe.setDescription(search.value());
         }
         Example<VideoEntity> example = Example.of(probe,
-                ExampleMatcher.matchingAny()
+                ExampleMatcher.matchingAny() // we are putting the same values in name and description
                         .withIgnoreCase()
                         .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
 
-        return repository.findAll(example)
+        return videoRepository.findAll(example);
     }
 }
