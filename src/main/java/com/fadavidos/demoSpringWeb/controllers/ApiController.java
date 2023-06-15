@@ -1,10 +1,8 @@
 package com.fadavidos.demoSpringWeb.controllers;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +23,11 @@ public class ApiController {
     @PostMapping("/api/videos")
     public Video newVideo(@RequestBody Video newVideo){
         return videoService.create(newVideo);
+    }
+
+    @PostMapping("/api/videos/multi-field-search")
+    public List<VideoEntity> multiFieldSearch(@RequestBody VideoSearch search) {
+        return videoService.search(search);
     }
 
 

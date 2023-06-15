@@ -8,4 +8,6 @@ This repo is the application of this Book [Learning Spring Boot 3.0](https://www
 
 curl localhost:9000/api/videos
 
-curl -v -X POST localhost:8080/api/videos -d '{"name": "Learning Spring Boot 3"}' -H 'Content-type:application/json'
+curl -v -X POST localhost:9000/api/videos -d '{"name": "Learning Spring Boot 3"}' -H 'Content-type:application/json'
+
+curl -v -X POST localhost:9000/api/videos/multi-field-search -d '{"name":"e"}' -H 'Content-type:application/json'
