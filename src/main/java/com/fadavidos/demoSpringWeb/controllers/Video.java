@@ -1,4 +1,4 @@
 package com.fadavidos.demoSpringWeb.controllers;
 
-record Video(String name) {
+record Video(String name, String description) {
 }

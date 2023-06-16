@@ -18,20 +18,16 @@ public class VideoService {
         this.videoRepository = videoRepository;
     }
 
-    private List<Video> videos = List.of(
-            new Video("Need HELP with your SPRING BOOT 3App?"),
-            new Video("Don't do THIS to your own CODE!"),
-            new Video("SECRETS to fix BROKEN CODE!")
-    );
-
     public List<Video> getVideos() {
-        return videos;
+        return videoRepository
+                .findAll()
+                .stream()
+                .map(videoEntity -> new Video(videoEntity.getName(), videoEntity.getDescription()))
+                .toList();
     }
 
     public Video create(Video newVideo) {
-        List<Video> copyOfVideos = new ArrayList<>(videos);
-        copyOfVideos.add(newVideo);
-        this.videos = List.copyOf(copyOfVideos);
+        videoRepository.save(new VideoEntity(newVideo.name(), newVideo.description()));
         return newVideo;
 
     }
