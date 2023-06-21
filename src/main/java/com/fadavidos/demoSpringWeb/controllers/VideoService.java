@@ -1,11 +1,11 @@
 package com.fadavidos.demoSpringWeb.controllers;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,18 +18,15 @@ public class VideoService {
         this.videoRepository = videoRepository;
     }
 
-    public List<Video> getVideos() {
+    public List<VideoEntity> getVideos() {
         return videoRepository
                 .findAll()
                 .stream()
-                .map(videoEntity -> new Video(videoEntity.getName(), videoEntity.getDescription()))
                 .toList();
     }
 
-    public Video create(Video newVideo) {
-        videoRepository.save(new VideoEntity(newVideo.name(), newVideo.description()));
-        return newVideo;
-
+    public VideoEntity create(Video newVideo, String username) {
+        return videoRepository.saveAndFlush(new VideoEntity(newVideo.name(), newVideo.description(), username));
     }
 
     public List<VideoEntity> search(VideoSearch videoSearch) {
@@ -63,5 +60,38 @@ public class VideoService {
                         .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
 
         return videoRepository.findAll(example);
+    }
+
+    public void delete(Long videoId) {
+        videoRepository.findById(videoId)
+                .map(videoEntity -> {
+                    videoRepository.delete(videoEntity);
+                    return true;
+                }).orElseThrow(() -> new RuntimeException(String.format("No video at %s", videoId)));
+    }
+
+    @PostConstruct
+    void initDatabase(){
+        videoRepository.save(
+                new VideoEntity(
+                        "Need help with your spring boot 3 app?",
+                        "Spring boot 3 will only speed things up and make it super simple to serve templates " +
+                                "and raw data",
+                        "alice"
+                ));
+        videoRepository.save(
+                new VideoEntity(
+                        "Don't do THIS to your own CODE!",
+                        "As a pro developer, never ever EVER do this to your code. Because you'll ultimately " +
+                                "be doing it to YOURSELF!",
+                        "alice"
+                ));
+        videoRepository.save(
+                new VideoEntity(
+                        "SECRETS to fix BROKEN CODE!",
+                        "Discover ways to not only debug your code, but to regain your confidence and get " +
+                                "back in the game as a software developer.",
+                        "bob"
+                ));
     }
 }
