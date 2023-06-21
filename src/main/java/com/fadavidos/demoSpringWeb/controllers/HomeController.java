@@ -33,16 +33,18 @@ public class HomeController {
     }
 
     @PostMapping("/multi-field-search")
-    public String multiFieldSearch(@ModelAttribute VideoSearch search, Model model) {
+    public String multiFieldSearch(@ModelAttribute VideoSearch search, Model model, Authentication authentication) {
         List<VideoEntity> searchResults = videoService.search(search);
         model.addAttribute("videos", searchResults);
+        model.addAttribute("authentication", authentication);
         return "index";
     }
 
     @PostMapping("/universal-search")
-    public String universalSearch(@ModelAttribute UniversalSearch search, Model model){
+    public String universalSearch(@ModelAttribute UniversalSearch search, Model model, Authentication authentication){
         List<VideoEntity> videos = videoService.search(search);
         model.addAttribute("videos", videos);
+        model.addAttribute("authentication", authentication);
         return "index";
     }
 
