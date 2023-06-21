@@ -3,6 +3,20 @@
   In this chapter, we are learning how to make
   a web app using Spring Boot 3.0
 </p>
+
+<h3>User Profile</h3>
+<ul>
+    <li>Username: {{authentication.name}}</li>
+    <li>Authorities: {{authentication.authorities}}</li>
+</ul>
+<form action="/logout" method="post">
+    <input type="hidden" name="{{_csrf.parameterName}}"
+      value="{{_csrf.token}}">
+    <button type="submit">Logout</button>
+</form>
+
+<h3>Videos</h3>
+
 <ul>
     {{#videos}}
         <li>
@@ -16,33 +30,35 @@
         </li>
     {{/videos}}
 </ul>
+
+<h3>Add a new video</h3>
+
 <form action="/new-video" method="post">
+    <label for="name">Name:</label>
     <input type="text" name="name">
+    <label for="description">Description:</label>
+    <input type="text" name="description">
     <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}">
     <button type="submit">Submit</button>
 </form>
+
+<h3>Multi field search</h3>
+
 <form action="/multi-field-search" method="post">
   <label for="name">Name:</label>
   <input type="text" name="name">
   <label for="description">Description:</label>
   <input type="text" name="description">
-  <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}">
-  <button type="submit">Search</button>
-</form>
-<form action="/universal-search" method="post">
-  <label for="value">Search:</label>
-  <input type="text" name="value">
-  <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}">
+   <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}">
   <button type="submit">Search</button>
 </form>
 
-<h3>User Profile</h3>
-<ul>
-    <li>Username: {{authentication.name}}</li>
-    <li>Authorities: {{authentication.authorities}}</li>
-</ul>
-<form action="/logout" method="post">
-    <input type="hidden" name="{{_csrf.parameterName}}"
-      value="{{_csrf.token}}">
-    <button type="submit">Logout</button>
+<h3>Universal search</h3>
+
+<form action="/universal-search" method="post">
+  <label for="value">Search:</label>
+  <input type="text" name="value">
+   <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}">
+  <button type="submit">Search</button>
 </form>
+

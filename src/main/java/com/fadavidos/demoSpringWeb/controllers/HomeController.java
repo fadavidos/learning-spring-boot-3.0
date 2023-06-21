@@ -39,6 +39,13 @@ public class HomeController {
         return "index";
     }
 
+    @PostMapping("/universal-search")
+    public String universalSearch(@ModelAttribute UniversalSearch search, Model model){
+        List<VideoEntity> videos = videoService.search(search);
+        model.addAttribute("videos", videos);
+        return "index";
+    }
+
     @PostMapping("/delete/videos/{videoId}")
     public String deleteVideo(@PathVariable Long videoId) {
         videoService.delete(videoId);

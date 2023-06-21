@@ -58,20 +58,24 @@ public class SecurityConfig {
     //SecurityFilterChain is the bean type needed to define a Spring Security policy
     @Bean
     SecurityFilterChain configureSecurity(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests() //
-                .requestMatchers("/login").permitAll() //
-                .requestMatchers("/", "/search").authenticated() //
-                .requestMatchers(HttpMethod.GET, "/api/**").authenticated() //
-                .requestMatchers("/admin").hasRole("ADMIN") //
-                .requestMatchers(HttpMethod.POST, "/delete/**", "/new-video").authenticated() //
-                .anyRequest().denyAll() //
-                .and() //
-                .formLogin() //
-                .and() //
+        http.authorizeHttpRequests()
+                .requestMatchers("/login").permitAll()
+                .requestMatchers("/", "/search").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
+                .requestMatchers("/admin").hasRole("ADMIN")
+                .requestMatchers(
+                        HttpMethod.POST,
+                        "/delete/**",
+                        "/new-video",
+                        "/universal-search",
+                        "/multi-field-search"
+                ).authenticated() //
+                .anyRequest().denyAll()
+                .and()
+                .formLogin()
+                .and()
                 .httpBasic();
         return http.build();
-
-
     }
 
 }
