@@ -1,4 +1,4 @@
-package com.fadavidos.demoSpringWeb;
+package com.fadavidos.demoSpringWeb.controllers;
 
 import com.fadavidos.demoSpringWeb.controllers.VideoEntity;
 import org.junit.jupiter.api.Test;
