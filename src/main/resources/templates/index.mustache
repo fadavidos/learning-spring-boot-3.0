@@ -57,7 +57,8 @@
 
 <form action="/universal-search" method="post">
   <label for="value">Search:</label>
-  <input type="text" name="value">
+  <label for="word">Word:</label>
+  <input type="text" name="word">
    <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}">
   <button type="submit">Search</button>
 </form>
